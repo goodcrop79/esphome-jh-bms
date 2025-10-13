@@ -1,0 +1,121 @@
+esphome:
+  name: jh-bms-monitor
+  friendly_name: JH BMS Monitor
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+  level: DEBUG
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "goodcrop"
+
+ota:
+  platform: esphome
+  password: "goodcrop"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Jh-Bms-Monitor Fallback Hotspot"
+    password: "fallback_password"
+
+captive_portal:
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true
+
+# 由于ESPHome不直接支持Gitee仓库格式，我们使用本地组件
+# 请确保将此配置文件和components目录一起上传到ESPHome Builder环境
+
+# JH BMS ESP32组件主配置
+jh_bms_esp32:
+  # 设置协议版本：JH01、JH02或JH03
+  protocol_version: JH01
+  # 设置轮询间隔（10秒）
+  throttle: 10s
+  # 创建设备连接
+  ble_client_id: bms_client
+
+# BLE客户端配置
+ble_client:
+  - mac_address: "EC:23:09:0D:60:31"  # 替换为您的JH BMS设备的MAC地址
+    id: bms_client
+    # 连接参数配置
+    auto_reconnect: true
+    connect_timeout: 30s
+
+# 二进制传感器配置
+binary_sensor:
+  # 在线状态
+  - platform: jh_bms_esp32
+    online_status:
+      name: "JH BMS Online Status"
+
+  # 充电状态
+  - platform: jh_bms_esp32
+    charging:
+      name: "JH BMS Charging Status"
+
+  # 放电状态
+  - platform: jh_bms_esp32
+    discharging:
+      name: "JH BMS Discharging Status"
+
+  # 均衡状态
+  - platform: jh_bms_esp32
+    balancing:
+      name: "JH BMS Balancing Status"
+
+# 传感器配置
+sensor:
+  # 总电压
+  - platform: jh_bms_esp32
+    total_voltage:
+      name: "JH BMS Total Voltage"
+      accuracy_decimals: 3
+
+  # 电流
+  - platform: jh_bms_esp32
+    current:
+      name: "JH BMS Current"
+      accuracy_decimals: 2
+
+  # SOC (荷电状态)
+  - platform: jh_bms_esp32
+    state_of_charge:
+      name: "JH BMS State of Charge"
+
+  # 温度传感器1
+  - platform: jh_bms_esp32
+    temperature_sensor_1:
+      name: "JH BMS Temperature 1"
+
+  # 温度传感器2
+  - platform: jh_bms_esp32
+    temperature_sensor_2:
+      name: "JH BMS Temperature 2"
+
+# 文本传感器配置
+text_sensor:
+  # 错误信息
+  - platform: jh_bms_esp32
+    errors:
+      name: "JH BMS Errors"
+
+  # 操作状态
+  - platform: jh_bms_esp32
+    operation_status:
+      name: "JH BMS Operation Status"

@@ -1,3 +1,7 @@
+external_components:
+  - source: components/
+    components: [ jh_bms_esp32 ]
+
 esphome:
   name: jh-bms-esp32
   friendly_name: JH BMS ESP32
@@ -14,10 +18,10 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "your_encryption_key_here"
+    key: "goodcrop"
 
 ota:
-  password: "your_ota_password_here"
+  password: "goodcrop"
 
 wifi:
   ssid: !secret wifi_ssid
@@ -184,7 +188,7 @@ text_sensor:
 # JH BMS ESP32组件主配置
 jh_bms_esp32:
   # 设置协议版本：JH01、JH02或JH03
-  protocol_version: JH02
+  protocol_version: JH01
   # 设置轮询间隔（10秒）
   throttle: 10s
   # 创建设备连接
@@ -192,7 +196,7 @@ jh_bms_esp32:
 
 # BLE客户端配置
 ble_client:
-  - mac_address: "XX:XX:XX:XX:XX:XX"  # 替换为您的JH BMS设备的MAC地址
+  - mac_address: "EC:23:09:0D:60:31"  # 替换为您的JH BMS设备的MAC地址
     id: bms_client
     # 连接参数配置
     auto_reconnect: true
