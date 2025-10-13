@@ -1,0 +1,28 @@
+{
+  "name": "jh_bms_esp32",
+  "version": "1.0.0",
+  "description": "JH BMS BLE通信组件，用于ESP32与JH系列智能电池管理系统通信",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/esphome/esphome-jk-bms"
+  },
+  "dependencies": {
+    "esphome": "^2023.12.0",
+    "esphome_ble_client": "^2023.12.0"
+  },
+  "codeowners": [
+    "@esphome"
+  ],
+  "requirements": [],
+  "esphome": {
+    "build_flags": [
+      "-DUSE_JH_BMS_ESP32"
+    ]
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "platforms": [
+    "esp32"
+  ]
+}
