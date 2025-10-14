@@ -1,5 +1,21 @@
-esphome:
+# 使用本地组件方式 - 这是目前最可靠的解决方案
+# 确保将此配置文件和components目录一起上传到ESPHome Builder环境
+
+substitutions:
   name: jh-bms-monitor
+  device_description: "Monitor and control a JH-BMS via bluetooth"
+
+# 注释掉GitHub组件调用配置，因为GitHub仓库结构不符合ESPHome要求
+# # 从GitHub调用组件的配置
+# external_components:
+#   # JH BMS组件
+#   - source: github://goodcrop79/esphome-jh-bms@main
+#     components: [jh_bms_esp32]
+#     refresh: 1d
+
+# 不使用external_components配置，直接使用本地components目录中的组件
+esphome:
+  name: ${name}
   friendly_name: JH BMS Monitor
 
 esp32:
@@ -36,9 +52,6 @@ esp32_ble_tracker:
     interval: 1100ms
     window: 1100ms
     active: true
-
-# 由于ESPHome不直接支持Gitee仓库格式，我们使用本地组件
-# 请确保将此配置文件和components目录一起上传到ESPHome Builder环境
 
 # JH BMS ESP32组件主配置
 jh_bms_esp32:

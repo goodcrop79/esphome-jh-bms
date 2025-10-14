@@ -51,6 +51,9 @@ CONFIG_MODES = {
     "DEBUG": 1,
 }
 
+# 定义组件ID配置键
+CONF_JH_BMS_ESP32_ID = "jh_bms_esp32_id"
+
 # 定义传感器类型配置
 CONF_CELL_VOLTAGE = "cell_voltage"
 CONF_TOTAL_VOLTAGE = "total_voltage"
@@ -138,6 +141,11 @@ def validate_config_mode(value):
             raise cv.Invalid(f"Invalid config mode {value}")
         return value
     raise cv.Invalid(f"Invalid config mode {value}")
+
+# 定义基本组件架构
+JH_BMS_ESP32_COMPONENT_SCHEMA = cv.Schema({
+    cv.Required(CONF_JH_BMS_ESP32_ID): cv.use_id(JhBmsEsp32),
+})
 
 # 定义完整的组件配置架构
 CONFIG_SCHEMA = cv.All(
