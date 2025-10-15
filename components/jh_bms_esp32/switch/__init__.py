@@ -2,17 +2,7 @@ import esphome.codegen as cg
 from esphome.components import switch
 import esphome.config_validation as cv
 from esphome.const import (
-    DEVICE_CLASS_SWITCH,
-    ICON_CHARGING,
-    ICON_DISCHARGE,
-    ICON_COUNTER_RESET,
-    ICON_POWER,
-    ICON_LIGHTBULB,
-    ICON_SIGNAL,
-    ICON_BATTERY_CHARGING,
-    ICON_HOME_LIGHTNING_BOLT,
-    ICON_ALERT_CIRCLE,
-    ICON_AUTORENEW,
+    DEVICE_CLASS_SWITCH
 )
 
 from .. import (
@@ -20,6 +10,57 @@ from .. import (
     JH_BMS_ESP32_COMPONENT_SCHEMA,
     jh_bms_esp32_ns,
 )
+
+# 为ESPHome 2025.9.3及更高版本定义缺失的常量
+try:
+    from esphome.const import ICON_CHARGING
+except ImportError:
+    ICON_CHARGING = "mdi:battery-charging"
+
+try:
+    from esphome.const import ICON_DISCHARGE
+except ImportError:
+    ICON_DISCHARGE = "mdi:battery-discharge"
+
+try:
+    from esphome.const import ICON_COUNTER_RESET
+except ImportError:
+    ICON_COUNTER_RESET = "mdi:counter-reset"
+
+try:
+    from esphome.const import ICON_POWER
+except ImportError:
+    ICON_POWER = "mdi:power"
+
+try:
+    from esphome.const import ICON_LIGHTBULB
+except ImportError:
+    ICON_LIGHTBULB = "mdi:lightbulb"
+
+try:
+    from esphome.const import ICON_SIGNAL
+except ImportError:
+    ICON_SIGNAL = "mdi:signal"
+
+try:
+    from esphome.const import ICON_BATTERY_CHARGING
+except ImportError:
+    ICON_BATTERY_CHARGING = "mdi:battery-charging"
+
+try:
+    from esphome.const import ICON_HOME_LIGHTNING_BOLT
+except ImportError:
+    ICON_HOME_LIGHTNING_BOLT = "mdi:home-lightning-bolt"
+
+try:
+    from esphome.const import ICON_ALERT_CIRCLE
+except ImportError:
+    ICON_ALERT_CIRCLE = "mdi:alert-circle"
+
+try:
+    from esphome.const import ICON_AUTORENEW
+except ImportError:
+    ICON_AUTORENEW = "mdi:autorenew"
 from ..const import (
     CONF_BALANCER,
     CONF_CHARGING,

@@ -1,9 +1,9 @@
 # 使用本地组件方式 - 这是目前最可靠的解决方案
-# 通过GitHub拉取JH BMS组件（包含修复代码的版本1.0.12）
+# 通过GitHub拉取JH BMS组件（包含修复代码的版本1.0.13）
 # 已完全修复ESPHome 2025.9.3版本的所有导入错误、循环导入问题和命名空间变量不匹配问题
 # 修复包括CONF_NUMBERS、CONF_BUTTONS、CONF_PROTOCOL_VERSION、UNIT_MILLIOHM和UNIT_AMPERE_HOURS的缺失定义，以及所有命名空间变量名的统一
 # 添加了number.number_schema()函数的兼容性补丁，解决了ESPHome 2025.9.3版本中的API变化问题
-# 修复了button模块中ICON_SEARCH和ICON_FILE_FIND常量的导入错误
+# 修复了所有组件中使用的图标常量导入错误，包括button、text_sensor、sensor和switch模块中的多个常量
 
 substitutions:
   name: jh-bms-monitor

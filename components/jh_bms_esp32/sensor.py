@@ -10,9 +10,6 @@ from esphome.const import (
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
-    ICON_COUNTER,
-    ICON_EMPTY,
-    ICON_TIMELAPSE,
     STATE_CLASS_MEASUREMENT,
     STATE_CLASS_TOTAL_INCREASING,
     UNIT_AMPERE,
@@ -25,6 +22,22 @@ from esphome.const import (
 
 from . import CONF_JH_BMS_ESP32_ID, JH_BMS_ESP32_COMPONENT_SCHEMA
 from .const import CONF_BALANCING
+
+# 为ESPHome 2025.9.3及更高版本定义缺失的常量
+try:
+    from esphome.const import ICON_COUNTER
+except ImportError:
+    ICON_COUNTER = "mdi:counter"
+
+try:
+    from esphome.const import ICON_EMPTY
+except ImportError:
+    ICON_EMPTY = "mdi:circle-outline"
+
+try:
+    from esphome.const import ICON_TIMELAPSE
+except ImportError:
+    ICON_TIMELAPSE = "mdi:timelapse"
 
 DEPENDENCIES = ["jh_bms_esp32"]
 

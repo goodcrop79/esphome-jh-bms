@@ -1,9 +1,15 @@
 import esphome.codegen as cg
 from esphome.components import text_sensor
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, ICON_TIMELAPSE
+from esphome.const import CONF_ID
 
 from . import CONF_JH_BMS_ESP32_ID, JH_BMS_ESP32_COMPONENT_SCHEMA
+
+# 为ESPHome 2025.9.3及更高版本定义缺失的常量
+try:
+    from esphome.const import ICON_TIMELAPSE
+except ImportError:
+    ICON_TIMELAPSE = "mdi:timelapse"
 
 DEPENDENCIES = ["jh_bms_esp32"]
 
