@@ -65,8 +65,12 @@ fi
 sleep 1
 
 # 添加components目录及其内容到暂存区
-echo "\n${green}添加components目录到暂存区...${nc}"
-git add components/
+ echo "
+${green}添加components目录到暂存区...${nc}"
+ git add components/
+
+ # 特别添加__init__.py文件以确保它被包含
+ git add components/jh_bms_esp32/__init__.py
 
 # 检查是否有未跟踪的文件
 untracked_files=$(git status --porcelain | grep '^??' | wc -l)
@@ -81,17 +85,27 @@ fi
 sleep 1
 
 # 提交更改
-echo "\n${green}创建提交...${nc}"
-echo -n "请输入提交信息: "
-read commit_message
-commit_message=${commit_message:-"上传完整的JH BMS ESP32组件目录结构"}
-git commit -m "$commit_message"
+ echo "
+${green}创建提交...${nc}"
+ echo -n "请输入提交信息: "
+ read commit_message
+ commit_message=${commit_message:-"上传完整的JH BMS ESP32组件目录结构"}
+ git commit -m "$commit_message"
 
-sleep 1
+ # 检查是否有任何更改需要提交
+ if [ $? -ne 0 ]; then
+     echo "
+${red}没有检测到更改，但仍尝试强制提交...${nc}"
+     # 如果没有更改，创建一个空提交
+     git commit --allow-empty -m "强制更新: $commit_message"
+ fi
 
-# 推送到GitHub
-echo "\n${green}推送到GitHub仓库...${nc}"
-git push -u origin $branch_name
+ sleep 1
+
+ # 推送到GitHub，使用--force选项确保更新
+ echo "
+${green}推送到GitHub仓库...${nc}"
+ git push --force -u origin $branch_name
 
 # 检查推送是否成功
 if [ $? -eq 0 ]; then

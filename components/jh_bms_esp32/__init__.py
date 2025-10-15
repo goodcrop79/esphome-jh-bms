@@ -32,6 +32,9 @@ try:
 except ImportError:
     CONF_NUMBERS = "numbers"
 
+# JH BMS ESP32 组件版本: 1.0.1
+# 修复了ESPHome 2025.9.3版本中CONF_NUMBERS导入问题
+
 from . import number, button
 
 AUTO_LOAD = ["ble_client", "sensor", "binary_sensor", "text_sensor", "switch", "number", "button"]
