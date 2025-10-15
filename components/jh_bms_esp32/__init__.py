@@ -1,5 +1,5 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.18
+# JH BMS ESP32 组件版本: 1.0.19
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
 # 添加了number.number_schema()函数的兼容性补丁，修复了ESPHome 2025.9.3版本的API变化
@@ -9,6 +9,7 @@ import esphome.codegen as cg
 # 添加了缺失的text_sensor模块导入，解决了'name 'text_sensor' is not defined'错误
 # 修复了text_sensor.text_sensor属性名错误，更新为text_sensor.TextSensor
 # 修复了button.jh_button_schema属性名错误，更新为button.CONFIG_SCHEMA
+# 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
 try:
@@ -312,7 +313,7 @@ CONFIG_SCHEMA = cv.All(
         # 【需要修改】根据JH BMS的实际配置需求添加更多配置项
     })
     .extend(ble_client.BLE_CLIENT_SCHEMA)
-    .extend(cv.polling_component_schema(1000)),
+    .extend(cv.polling_component_schema("1s")),
     validate_config,
 )
 

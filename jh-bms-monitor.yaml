@@ -1,5 +1,5 @@
 # 使用本地组件方式 - 这是目前最可靠的解决方案
-# 通过GitHub拉取JH BMS组件（包含修复代码的版本1.0.18）
+# 通过GitHub拉取JH BMS组件（包含修复代码的版本1.0.19）
 # 已完全修复ESPHome 2025.9.3版本的所有导入错误、循环导入问题和命名空间变量不匹配问题
 # 修复包括CONF_NUMBERS、CONF_BUTTONS、CONF_PROTOCOL_VERSION、UNIT_MILLIOHM和UNIT_AMPERE_HOURS的缺失定义，以及所有命名空间变量名的统一
 # 添加了number.number_schema()函数的兼容性补丁，解决了ESPHome 2025.9.3版本中的API变化问题
@@ -9,6 +9,7 @@
 # 添加了缺失的text_sensor模块导入，解决了'name 'text_sensor' is not defined'错误
 # 修复了text_sensor.text_sensor属性名错误，更新为text_sensor.TextSensor，解决了ESPHome 2025.9.3版本中的属性名错误
 # 修复了button.jh_button_schema属性名错误，更新为button.CONFIG_SCHEMA，解决了ESPHome 2025.9.3版本中的AttributeError错误
+# 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"，解决了ESPHome 2025.9.3版本中的AssertionError错误
 
 substitutions:
   name: jh-bms-monitor
