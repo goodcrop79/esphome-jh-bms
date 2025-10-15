@@ -1,10 +1,11 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.15
+# JH BMS ESP32 组件版本: 1.0.16
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
 # 添加了number.number_schema()函数的兼容性补丁，修复了ESPHome 2025.9.3版本的API变化
 # 修复了所有组件中使用的图标常量导入错误，特别是button模块中遗漏的图标常量
 # 添加了缺失的sensor和binary_sensor模块导入，解决了'name 'sensor' is not defined'错误
+# 修复了sensor.sensor和binary_sensor.binary_sensor属性名错误，更新为sensor.Sensor和binary_sensor.BinarySensor
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
 try:
@@ -175,12 +176,12 @@ def validate_config_mode(value):
 
 # 定义传感器配置
 SENSOR_SCHEMA = cv.Schema({
-    cv.Optional(CONF_ID): cv.declare_id(sensor.sensor),
+    cv.Optional(CONF_ID): cv.declare_id(sensor.Sensor),
 })
 
 # 定义二进制传感器配置
 BINARY_SENSOR_SCHEMA = cv.Schema({
-    cv.Optional(CONF_ID): cv.declare_id(binary_sensor.binary_sensor),
+    cv.Optional(CONF_ID): cv.declare_id(binary_sensor.BinarySensor),
 })
 
 # 定义文本传感器配置
