@@ -5,15 +5,14 @@ substitutions:
   name: jh-bms-monitor
   device_description: "Monitor and control a JH-BMS via bluetooth"
 
-# 注释掉GitHub组件调用配置，因为GitHub仓库结构不符合ESPHome要求
-# # 从GitHub调用组件的配置
-# external_components:
-#   # JH BMS组件
-#   - source: github://goodcrop79/esphome-jh-bms@main
-#     components: [jh_bms_esp32]
-#     refresh: 1d
+# 从GitHub调用组件的配置
+external_components:
+  # JH BMS组件
+  - source: github://goodcrop79/esphome-jh-bms@main
+    components: [jh_bms_esp32]
+    refresh: 1d
 
-# 不使用external_components配置，直接使用本地components目录中的组件
+# 使用GitHub组件，不再需要本地components目录
 esphome:
   name: ${name}
   friendly_name: JH BMS Monitor

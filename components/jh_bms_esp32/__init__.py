@@ -10,7 +10,6 @@ from esphome.const import (
     CONF_SENSORS,
     CONF_SWITCHES,
     CONF_TEXT_SENSORS,
-    CONF_NUMBERS,
     CONF_BUTTONS,
     CONF_PROTOCOL_VERSION,
     DEVICE_CLASS_CURRENT,
@@ -26,6 +25,12 @@ from esphome.const import (
     UNIT_HOUR,
     UNIT_MILLIOHM,
 )
+
+# 为旧版本ESPHome定义缺失的常量
+try:
+    from esphome.const import CONF_NUMBERS
+except ImportError:
+    CONF_NUMBERS = "numbers"
 
 from . import number, button
 
