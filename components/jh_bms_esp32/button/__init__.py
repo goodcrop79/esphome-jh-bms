@@ -4,7 +4,6 @@ import esphome.config_validation as cv
 from esphome.const import (
     ENTITY_CATEGORY_DIAGNOSTIC,
     ENTITY_CATEGORY_CONFIG,
-    ICON_FILE_FIND,
     ICON_BATTERY_PLUS,
     ICON_BATTERY_MINUS,
     ICON_RESTART,
@@ -17,6 +16,11 @@ try:
     from esphome.const import ICON_SEARCH
 except ImportError:
     ICON_SEARCH = "mdi:search"
+
+try:
+    from esphome.const import ICON_FILE_FIND
+except ImportError:
+    ICON_FILE_FIND = "mdi:file-find"
 
 from .. import (
     CONF_JH_BMS_ESP32_ID,
