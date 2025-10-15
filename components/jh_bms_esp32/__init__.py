@@ -1,5 +1,5 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.3
+# JH BMS ESP32 组件版本: 1.0.5
 # 修复了ESPHome 2025.9.3版本中的导入错误
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
@@ -17,6 +17,11 @@ try:
     from esphome.const import CONF_PROTOCOL_VERSION
 except ImportError:
     CONF_PROTOCOL_VERSION = "protocol_version"
+
+try:
+    from esphome.const import UNIT_MILLIOHM
+except ImportError:
+    UNIT_MILLIOHM = "mΩ"
 
 import esphome.config_validation as cv
 from esphome.components import ble_client
@@ -42,7 +47,7 @@ from esphome.const import (
     UNIT_CELSIUS,
     UNIT_PERCENT,
     UNIT_HOUR,
-    UNIT_MILLIOHM,
+    # UNIT_MILLIOHM 已在上面定义
 )
 
 from . import number, button
