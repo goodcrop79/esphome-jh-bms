@@ -1,6 +1,6 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.6
-# 修复了ESPHome 2025.9.3版本中的导入错误
+# JH BMS ESP32 组件版本: 1.0.7
+# 修复了ESPHome 2025.9.3版本中的导入错误和循环导入问题
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
 try:
@@ -56,11 +56,6 @@ from esphome.const import (
     # UNIT_AMPERE_HOURS 已在上面定义
 )
 
-from . import number, button
-
-AUTO_LOAD = ["ble_client", "sensor", "binary_sensor", "text_sensor", "switch", "number", "button"]
-DEPENDENCIES = ["ble_client"]
-
 # 定义JH BMS ESP32组件命名空间
 hjh_bms_esp32_ns = cg.esphome_ns.namespace("jh_bms_esp32")
 JhBmsEsp32 = hjh_bms_esp32_ns.class_("JhBmsEsp32", ble_client.BLEClientNode, cg.PollingComponent)
@@ -89,6 +84,34 @@ CONF_TOTAL_VOLTAGE = "total_voltage"
 CONF_CURRENT = "current"
 CONF_POWER = "power"
 CONF_SOC = "soc"
+CONF_TEMPERATURE = "temperature"
+CONF_BALANCING = "balancing"
+CONF_ERROR = "error"
+CONF_STATE = "state"
+CONF_CAPACITY = "capacity"
+CONF_DAYS = "days"
+
+# 定义组件配置模式
+CONF_CONFIG_MODE = "config_mode"
+
+# 定义组件主要配置
+JH_BMS_ESP32_COMPONENT_SCHEMA = cv.Schema({
+    cv.GenerateID(): cv.declare_id(JhBmsEsp32),
+    cv.Required(CONF_MAC_ADDRESS): cv.mac_address,
+    cv.Optional(CONF_THROTTLE, default="60s"): cv.All(
+        cv.positive_time_period_milliseconds,
+        cv.Range(max=cv.TimePeriod(minutes=5)),
+    ),
+    cv.Optional(CONF_PROTOCOL_VERSION, default="JH01"): cv.enum(PROTOCOL_VERSIONS, upper=True),
+    cv.Optional(CONF_CONFIG_MODE, default="NORMAL"): cv.enum(CONFIG_MODES, upper=True),
+})
+
+from . import number, button
+
+AUTO_LOAD = ["ble_client", "sensor", "binary_sensor", "text_sensor", "switch", "number", "button"]
+DEPENDENCIES = ["ble_client"]
+
+# 继续定义其他传感器类型配置
 CONF_REMAINING_CAPACITY = "remaining_capacity"
 CONF_CYCLE_COUNT = "cycle_count"
 CONF_BALANCE_STATUS = "balance_status"
