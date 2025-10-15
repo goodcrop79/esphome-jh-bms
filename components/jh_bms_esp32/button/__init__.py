@@ -4,7 +4,6 @@ import esphome.config_validation as cv
 from esphome.const import (
     ENTITY_CATEGORY_DIAGNOSTIC,
     ENTITY_CATEGORY_CONFIG,
-    ICON_SEARCH,
     ICON_FILE_FIND,
     ICON_BATTERY_PLUS,
     ICON_BATTERY_MINUS,
@@ -12,6 +11,12 @@ from esphome.const import (
     ICON_CIRCLE_SLICE_8,
     ICON_RELOAD,
 )
+
+# 为ESPHome 2025.9.3及更高版本定义缺失的常量
+try:
+    from esphome.const import ICON_SEARCH
+except ImportError:
+    ICON_SEARCH = "mdi:search"
 
 from .. import (
     CONF_JH_BMS_ESP32_ID,
