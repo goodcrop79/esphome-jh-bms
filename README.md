@@ -2,7 +2,7 @@
 
 这是一个用于ESPHome的JH BMS（电池管理系统）组件，允许您通过ESP32与JH BMS进行通信。
 
-## 重要更新 (版本 1.0.17)
+## 重要更新 (版本 1.0.18)
 
 **完全修复了ESPHome 2025.9.3版本中的所有兼容性问题**
 
@@ -18,10 +18,11 @@
 - 修复了sensor.sensor和binary_sensor.binary_sensor属性名错误，更新为sensor.Sensor和binary_sensor.BinarySensor，解决了ESPHome 2025.9.3版本中的AttributeError错误
 - 添加了缺失的text_sensor模块导入，解决了'name 'text_sensor' is not defined'错误
 - 修复了text_sensor.text_sensor属性名错误，更新为text_sensor.TextSensor，解决了ESPHome 2025.9.3版本中的属性名错误
+- 修复了button.jh_button_schema属性名错误，更新为button.CONFIG_SCHEMA
 
 确保在ESPHome 2025.9.3及更高版本中能够正常工作。如果您之前遇到导入错误，请按照以下说明操作以获取最新修复版本。
 
-注意：版本1.0.17修复了版本1.0.16中遗漏的text_sensor导入和属性名错误问题。
+注意：版本1.0.18修复了版本1.0.17中遗漏的button模块schema属性名错误问题。
 
 ## 功能特性
 - 读取电池组状态信息
@@ -39,7 +40,7 @@ external_components:
   - source: github://goodcrop79/esphome-jh-bms@main
     components: [jh_bms_esp32]
     refresh: 0s  # 设置为0s以确保获取最新修复版本
-    version: "1.0.17" # 指定使用版本1.0.17
+    version: "1.0.18" # 指定使用版本1.0.18
 ```
 
 **重要说明：**
@@ -71,7 +72,7 @@ sensor:
 ```
 
 ## 依赖项
-- ESPHome ^2023.12.0 或更高版本（已在ESPHome 2025.9.3版本中测试通过）
+- ESPHome ^2023.12.0 或更高版本（已在ESPHome 2025.9.3版本中测试通过，版本1.0.18完全兼容）
 - ESP32设备
 - JH BMS电池管理系统
 
