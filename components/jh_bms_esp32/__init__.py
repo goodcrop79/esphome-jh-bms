@@ -1,4 +1,18 @@
 import esphome.codegen as cg
+# JH BMS ESP32 组件版本: 1.0.2
+# 修复了ESPHome 2025.9.3版本中的导入错误
+
+# 为ESPHome 2025.9.3及更高版本定义缺失的常量
+try:
+    from esphome.const import CONF_NUMBERS
+except ImportError:
+    CONF_NUMBERS = "numbers"
+
+try:
+    from esphome.const import CONF_BUTTONS
+except ImportError:
+    CONF_BUTTONS = "buttons"
+
 import esphome.config_validation as cv
 from esphome.components import ble_client
 from esphome.const import (
@@ -10,7 +24,7 @@ from esphome.const import (
     CONF_SENSORS,
     CONF_SWITCHES,
     CONF_TEXT_SENSORS,
-    CONF_BUTTONS,
+    # CONF_BUTTONS 已在上面定义
     CONF_PROTOCOL_VERSION,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_POWER,
@@ -25,20 +39,6 @@ from esphome.const import (
     UNIT_HOUR,
     UNIT_MILLIOHM,
 )
-
-# 为ESPHome 2025.9.3及更高版本定义缺失的常量
-try:
-    from esphome.const import CONF_NUMBERS
-except ImportError:
-    CONF_NUMBERS = "numbers"
-
-try:
-    from esphome.const import CONF_BUTTONS
-except ImportError:
-    CONF_BUTTONS = "buttons"
-
-# JH BMS ESP32 组件版本: 1.0.2
-# 修复了ESPHome 2025.9.3版本中CONF_NUMBERS和CONF_BUTTONS导入问题
 
 from . import number, button
 
