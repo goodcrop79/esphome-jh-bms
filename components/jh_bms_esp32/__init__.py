@@ -1,6 +1,7 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.8
+# JH BMS ESP32 组件版本: 1.0.9
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
+# 完全更新了所有使用旧命名空间变量的代码
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
 try:
@@ -62,7 +63,7 @@ jh_bms_esp32_ns = cg.esphome_ns.namespace("jh_bms_esp32")
 JhBmsEsp32 = jh_bms_esp32_ns.class_("JhBmsEsp32", ble_client.BLEClientNode, cg.PollingComponent)
 
 # 定义协议版本枚举
-ProtocolVersion = hjh_bms_esp32_ns.enum("ProtocolVersion")
+ProtocolVersion = jh_bms_esp32_ns.enum("ProtocolVersion")
 PROTOCOL_VERSIONS = {
     "JH01": ProtocolVersion.PROTOCOL_VERSION_JH01,
     "JH02": ProtocolVersion.PROTOCOL_VERSION_JH02,
