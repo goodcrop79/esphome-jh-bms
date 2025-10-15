@@ -23,6 +23,40 @@ from .. import (
     jh_bms_esp32_ns,
 )
 
+# 为ESPHome 2025.9.3及更高版本创建兼容的jh_number_schema函数
+def jh_number_schema():
+    # 在新版本的ESPHome中，number_schema()不再直接接受min_value等参数
+    # 这些参数现在应该在register_number()函数中设置
+    return number.number_schema(JhNumber)
+
+# 保存原始的number_schema函数引用
+original_number_schema = number.number_schema
+
+# 替换number.number_schema函数，使其在ESPHome 2025.9.3版本中兼容
+def patched_number_schema(class_=None, **kwargs):
+    # 过滤掉不支持的参数
+    supported_kwargs = {}
+    for key, value in kwargs.items():
+        # 对于ESPHome 2025.9.3及更高版本，我们只保留不受API变化影响的参数
+        if key not in ['min_value', 'max_value', 'step']:
+            supported_kwargs[key] = value
+    
+    # 调用原始函数
+    if class_ is None:
+        return original_number_schema(**supported_kwargs)
+    return original_number_schema(class_, **supported_kwargs)
+
+# 应用补丁
+try:
+    # 尝试调用number_schema函数，检查是否支持min_value参数
+    test_schema = original_number_schema(min_value=0)
+    # 如果没有抛出异常，说明API没有变化，不需要补丁
+    del test_schema
+    
+except TypeError:
+    # 如果抛出TypeError异常，说明API发生了变化，需要应用补丁
+    number.number_schema = patched_number_schema
+
 # 为了支持不同品牌的BMS，这里需要修改寄存器地址、数据格式和通信协议
 DEPENDENCIES = ["jh_bms_esp32"]
 
