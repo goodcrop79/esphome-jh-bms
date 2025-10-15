@@ -9,12 +9,13 @@ from esphome.const import (
     UNIT_PERCENT,
     UNIT_SECOND,
     UNIT_VOLT,
-    UNIT_AMPERE_HOURS,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
     DEVICE_CLASS_EMPTY,
 )
+
+from .. import UNIT_AMPERE_HOURS
 
 from .. import (
     CONF_JH_BMS_ESP32_ID,
