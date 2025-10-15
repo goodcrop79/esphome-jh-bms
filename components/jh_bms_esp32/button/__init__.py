@@ -4,14 +4,34 @@ import esphome.config_validation as cv
 from esphome.const import (
     ENTITY_CATEGORY_DIAGNOSTIC,
     ENTITY_CATEGORY_CONFIG,
-    ICON_BATTERY_PLUS,
-    ICON_BATTERY_MINUS,
-    ICON_RESTART,
-    ICON_CIRCLE_SLICE_8,
-    ICON_RELOAD,
 )
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
+try:
+    from esphome.const import ICON_BATTERY_PLUS
+except ImportError:
+    ICON_BATTERY_PLUS = "mdi:battery-plus"
+
+try:
+    from esphome.const import ICON_BATTERY_MINUS
+except ImportError:
+    ICON_BATTERY_MINUS = "mdi:battery-minus"
+
+try:
+    from esphome.const import ICON_RESTART
+except ImportError:
+    ICON_RESTART = "mdi:restart"
+
+try:
+    from esphome.const import ICON_CIRCLE_SLICE_8
+except ImportError:
+    ICON_CIRCLE_SLICE_8 = "mdi:circle-slice-8"
+
+try:
+    from esphome.const import ICON_RELOAD
+except ImportError:
+    ICON_RELOAD = "mdi:reload"
+
 try:
     from esphome.const import ICON_SEARCH
 except ImportError:
