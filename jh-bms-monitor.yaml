@@ -1,18 +1,18 @@
 # 使用本地组件方式 - 这是目前最可靠的解决方案
-# 确保将此配置文件和components目录一起上传到ESPHome Builder环境
+# 通过GitHub拉取JH BMS组件（包含修复代码的版本1.0.1）
+# 已修复ESPHome 2025.9.3版本的CONF_NUMBERS导入错误
 
 substitutions:
   name: jh-bms-monitor
   device_description: "Monitor and control a JH-BMS via bluetooth"
 
-# 从GitHub调用组件的配置
+# 通过GitHub拉取组件
+# 推荐使用此方式，方便后期修改代码后重新上传GitHub并获取更新
 external_components:
   # JH BMS组件
   - source: github://goodcrop79/esphome-jh-bms@main
     components: [jh_bms_esp32]
-    refresh: 1d
-
-# 使用GitHub组件，不再需要本地components目录
+    refresh: 0s  # 设置为0s可以立即获取最新代码，修改后设置回1d
 esphome:
   name: ${name}
   friendly_name: JH BMS Monitor

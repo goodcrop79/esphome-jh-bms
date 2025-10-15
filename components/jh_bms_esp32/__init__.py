@@ -26,14 +26,19 @@ from esphome.const import (
     UNIT_MILLIOHM,
 )
 
-# 为旧版本ESPHome定义缺失的常量
+# 为ESPHome 2025.9.3及更高版本定义缺失的常量
 try:
     from esphome.const import CONF_NUMBERS
 except ImportError:
     CONF_NUMBERS = "numbers"
 
-# JH BMS ESP32 组件版本: 1.0.1
-# 修复了ESPHome 2025.9.3版本中CONF_NUMBERS导入问题
+try:
+    from esphome.const import CONF_BUTTONS
+except ImportError:
+    CONF_BUTTONS = "buttons"
+
+# JH BMS ESP32 组件版本: 1.0.2
+# 修复了ESPHome 2025.9.3版本中CONF_NUMBERS和CONF_BUTTONS导入问题
 
 from . import number, button
 
