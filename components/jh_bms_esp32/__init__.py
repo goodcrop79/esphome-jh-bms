@@ -1,6 +1,6 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.7
-# 修复了ESPHome 2025.9.3版本中的导入错误和循环导入问题
+# JH BMS ESP32 组件版本: 1.0.8
+# 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
 try:
@@ -28,6 +28,7 @@ try:
 except ImportError:
     UNIT_AMPERE_HOURS = "Ah"
 
+import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import ble_client
 from esphome.const import (
@@ -57,8 +58,8 @@ from esphome.const import (
 )
 
 # 定义JH BMS ESP32组件命名空间
-hjh_bms_esp32_ns = cg.esphome_ns.namespace("jh_bms_esp32")
-JhBmsEsp32 = hjh_bms_esp32_ns.class_("JhBmsEsp32", ble_client.BLEClientNode, cg.PollingComponent)
+jh_bms_esp32_ns = cg.esphome_ns.namespace("jh_bms_esp32")
+JhBmsEsp32 = jh_bms_esp32_ns.class_("JhBmsEsp32", ble_client.BLEClientNode, cg.PollingComponent)
 
 # 定义协议版本枚举
 ProtocolVersion = hjh_bms_esp32_ns.enum("ProtocolVersion")
