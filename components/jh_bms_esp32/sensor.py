@@ -202,6 +202,9 @@ CONF_STATE_OF_CHARGE = "state_of_charge"
 CONF_CAPACITY_REMAINING = "capacity_remaining"
 CONF_TOTAL_BATTERY_CAPACITY_SETTING = "total_battery_capacity_setting"
 
+# 单位定义
+UNIT_EMPTY = ""
+
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
 CONF_CELL_VOLTAGE_2 = "cell_voltage_2"
