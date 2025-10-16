@@ -1,0 +1,74 @@
+esphome:
+  name: test-jh-bms
+  platformio_options:
+    board_build.source_filter: "+<*>"
+    build_flags:
+      - -Wno-unused-variable
+      - -Wno-unused-parameter
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+  level: DEBUG
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "test_password"
+
+jh_bms_esp32:
+  id: jh_bms
+  mac_address: "11:22:33:44:55:66"
+  bms_version: "jh01"
+  update_interval: 60s
+
+# 传感器配置
+sensor:
+  - platform: jh_bms_esp32
+    total_voltage:
+      name: "BMS Total Voltage"
+    current:
+      name: "BMS Current"
+    power:
+      name: "BMS Power"
+    state_of_charge:
+      name: "BMS SOC"
+    remaining_capacity:
+      name: "BMS Remaining Capacity"
+    cycle_count:
+      name: "BMS Cycle Count"
+    cell_voltage:
+      - name: "BMS Cell 1 Voltage"
+      - name: "BMS Cell 2 Voltage"
+    temperature:
+      - name: "BMS Temperature 1"
+      - name: "BMS Temperature 2"
+
+# 二进制传感器配置
+binary_sensor:
+  - platform: jh_bms_esp32
+    charging_status:
+      name: "BMS Charging Status"
+    discharging_status:
+      name: "BMS Discharging Status"
+    balance_state:
+      name: "BMS Balance State"
+    online_status:
+      name: "BMS Online Status"
+    heating_status:
+      name: "BMS Heating Status"
+    charging_mos_status:
+      name: "BMS Charging MOS Status"
+    discharging_mos_status:
+      name: "BMS Discharging MOS Status"
+
+# 文本传感器配置
+text_sensor:
+  - platform: jh_bms_esp32
+    errors:
+      name: "BMS Errors"

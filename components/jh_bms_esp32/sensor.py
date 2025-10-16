@@ -1,103 +1,153 @@
 import esphome.codegen as cg
-from esphome.components import sensor
 import esphome.config_validation as cv
+from esphome.components import sensor
 from esphome.const import (
+    CONF_BATTERY,
     CONF_CURRENT,
     CONF_POWER,
+    CONF_TEMPERATURE,
+    CONF_VOLTAGE,
+    CONF_CAPACITY,
+    UNIT_CELSIUS,
+    UNIT_PERCENT,
+    UNIT_VOLT,
+    UNIT_AMPERE,
+    UNIT_WATT,
+    UNIT_AMPERE_HOURS,
+    UNIT_CYCLE,
     DEVICE_CLASS_BATTERY,
     DEVICE_CLASS_CURRENT,
-    DEVICE_CLASS_EMPTY,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
-    STATE_CLASS_MEASUREMENT,
-    STATE_CLASS_TOTAL_INCREASING,
-    UNIT_AMPERE,
-    UNIT_CELSIUS,
-    UNIT_EMPTY,
-    UNIT_PERCENT,
-    UNIT_VOLT,
-    UNIT_WATT,
+    ICON_CURRENT_AC,
+    ICON_FLASH,
+    ICON_THERMOMETER,
+    ICON_VOLTAGE,
+    ICON_BATTERY,
 )
 
-from . import CONF_JH_BMS_ESP32_ID, JH_BMS_ESP32_COMPONENT_SCHEMA
-from .const import CONF_BALANCING
+from . import JhBmsEsp32, CONF_JH_BMS_ESP32_ID
 
-# 为ESPHome 2025.9.3及更高版本定义缺失的常量
-try:
-    from esphome.const import ICON_COUNTER
-except ImportError:
-    ICON_COUNTER = "mdi:counter"
-
-try:
-    from esphome.const import ICON_EMPTY
-except ImportError:
-    ICON_EMPTY = "mdi:circle-outline"
-
-try:
-    from esphome.const import ICON_TIMELAPSE
-except ImportError:
-    ICON_TIMELAPSE = "mdi:timelapse"
-
+CODEOWNERS = ["@kqepup"]
 DEPENDENCIES = ["jh_bms_esp32"]
 
-CODEOWNERS = ["@syssi", "@txubelaxu"]
+# 传感器类型
+CONF_TOTAL_VOLTAGE = "total_voltage"
+CONF_SOC = "state_of_charge"
+CONF_REMAINING_CAPACITY = "remaining_capacity"
+CONF_CYCLE_COUNT = "cycle_count"
+CONF_CELL_VOLTAGES = "cell_voltages"
+CONF_TEMPERATURES = "temperatures"
 
-# 电池单体电压相关传感器
-CONF_MIN_CELL_VOLTAGE = "min_cell_voltage"
-CONF_MAX_CELL_VOLTAGE = "max_cell_voltage"
-CONF_MIN_VOLTAGE_CELL = "min_voltage_cell"
-CONF_MAX_VOLTAGE_CELL = "max_voltage_cell"
-CONF_DELTA_CELL_VOLTAGE = "delta_cell_voltage"
-CONF_AVERAGE_CELL_VOLTAGE = "average_cell_voltage"
+# 定义所有传感器配置选项
+SENSORS = {
+    CONF_TOTAL_VOLTAGE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=2,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        icon=ICON_VOLTAGE,
+    ),
+    CONF_CURRENT: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=2,
+        device_class=DEVICE_CLASS_CURRENT,
+        icon=ICON_CURRENT_AC,
+    ),
+    CONF_POWER: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_POWER,
+        icon=ICON_FLASH,
+    ),
+    CONF_SOC: sensor.sensor_schema(
+        unit_of_measurement=UNIT_PERCENT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_BATTERY,
+        icon=ICON_BATTERY,
+    ),
+    CONF_REMAINING_CAPACITY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE_HOURS,
+        accuracy_decimals=1,
+        icon=ICON_BATTERY,
+    ),
+    CONF_CYCLE_COUNT: sensor.sensor_schema(
+        unit_of_measurement=UNIT_CYCLE,
+        accuracy_decimals=0,
+        icon=ICON_FLASH,
+    ),
+    CONF_TEMPERATURES: [
+        sensor.sensor_schema(
+            unit_of_measurement=UNIT_CELSIUS,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_TEMPERATURE,
+            icon=ICON_THERMOMETER,
+        )
+    ],
+    CONF_CELL_VOLTAGES: [
+        sensor.sensor_schema(
+            unit_of_measurement=UNIT_VOLT,
+            accuracy_decimals=3,
+            device_class=DEVICE_CLASS_VOLTAGE,
+            icon=ICON_VOLTAGE,
+        )
+    ],
+}
 
-# 32个单体电压传感器
-CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
-CONF_CELL_VOLTAGE_2 = "cell_voltage_2"
-CONF_CELL_VOLTAGE_3 = "cell_voltage_3"
-CONF_CELL_VOLTAGE_4 = "cell_voltage_4"
-CONF_CELL_VOLTAGE_5 = "cell_voltage_5"
-CONF_CELL_VOLTAGE_6 = "cell_voltage_6"
-CONF_CELL_VOLTAGE_7 = "cell_voltage_7"
-CONF_CELL_VOLTAGE_8 = "cell_voltage_8"
-CONF_CELL_VOLTAGE_9 = "cell_voltage_9"
-CONF_CELL_VOLTAGE_10 = "cell_voltage_10"
-CONF_CELL_VOLTAGE_11 = "cell_voltage_11"
-CONF_CELL_VOLTAGE_12 = "cell_voltage_12"
-CONF_CELL_VOLTAGE_13 = "cell_voltage_13"
-CONF_CELL_VOLTAGE_14 = "cell_voltage_14"
-CONF_CELL_VOLTAGE_15 = "cell_voltage_15"
-CONF_CELL_VOLTAGE_16 = "cell_voltage_16"
-CONF_CELL_VOLTAGE_17 = "cell_voltage_17"
-CONF_CELL_VOLTAGE_18 = "cell_voltage_18"
-CONF_CELL_VOLTAGE_19 = "cell_voltage_19"
-CONF_CELL_VOLTAGE_20 = "cell_voltage_20"
-CONF_CELL_VOLTAGE_21 = "cell_voltage_21"
-CONF_CELL_VOLTAGE_22 = "cell_voltage_22"
-CONF_CELL_VOLTAGE_23 = "cell_voltage_23"
-CONF_CELL_VOLTAGE_24 = "cell_voltage_24"
-CONF_CELL_VOLTAGE_25 = "cell_voltage_25"
-CONF_CELL_VOLTAGE_26 = "cell_voltage_26"
-CONF_CELL_VOLTAGE_27 = "cell_voltage_27"
-CONF_CELL_VOLTAGE_28 = "cell_voltage_28"
-CONF_CELL_VOLTAGE_29 = "cell_voltage_29"
-CONF_CELL_VOLTAGE_30 = "cell_voltage_30"
-CONF_CELL_VOLTAGE_31 = "cell_voltage_31"
-CONF_CELL_VOLTAGE_32 = "cell_voltage_32"
+# 配置模式
+CONFIG_SCHEMA = cv.Schema({
+    cv.GenerateID(CONF_JH_BMS_ESP32_ID): cv.use_id(JhBmsEsp32),
+    cv.Optional(CONF_TOTAL_VOLTAGE): SENSORS[CONF_TOTAL_VOLTAGE],
+    cv.Optional(CONF_CURRENT): SENSORS[CONF_CURRENT],
+    cv.Optional(CONF_POWER): SENSORS[CONF_POWER],
+    cv.Optional(CONF_SOC): SENSORS[CONF_SOC],
+    cv.Optional(CONF_REMAINING_CAPACITY): SENSORS[CONF_REMAINING_CAPACITY],
+    cv.Optional(CONF_CYCLE_COUNT): SENSORS[CONF_CYCLE_COUNT],
+    cv.Optional(CONF_CELL_VOLTAGES): cv.ensure_list(SENSORS[CONF_CELL_VOLTAGES][0]),
+    cv.Optional(CONF_TEMPERATURES): cv.ensure_list(SENSORS[CONF_TEMPERATURES][0]),
+})
 
-# 32个单体电阻传感器
-CONF_CELL_RESISTANCE_1 = "cell_resistance_1"
-CONF_CELL_RESISTANCE_2 = "cell_resistance_2"
-CONF_CELL_RESISTANCE_3 = "cell_resistance_3"
-CONF_CELL_RESISTANCE_4 = "cell_resistance_4"
-CONF_CELL_RESISTANCE_5 = "cell_resistance_5"
-CONF_CELL_RESISTANCE_6 = "cell_resistance_6"
-CONF_CELL_RESISTANCE_7 = "cell_resistance_7"
-CONF_CELL_RESISTANCE_8 = "cell_resistance_8"
-CONF_CELL_RESISTANCE_9 = "cell_resistance_9"
-CONF_CELL_RESISTANCE_10 = "cell_resistance_10"
-CONF_CELL_RESISTANCE_11 = "cell_resistance_11"
-CONF_CELL_RESISTANCE_12 = "cell_resistance_12"
+# 代码生成
+async def to_code(config):
+    # 获取JH BMS ESP32组件
+    parent = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+    
+    # 处理基本传感器
+    if CONF_TOTAL_VOLTAGE in config:
+        sens = await sensor.new_sensor(config[CONF_TOTAL_VOLTAGE])
+        cg.add(parent.set_total_voltage_sensor(sens))
+    
+    if CONF_CURRENT in config:
+        sens = await sensor.new_sensor(config[CONF_CURRENT])
+        cg.add(parent.set_current_sensor(sens))
+    
+    if CONF_POWER in config:
+        sens = await sensor.new_sensor(config[CONF_POWER])
+        cg.add(parent.set_power_sensor(sens))
+    
+    if CONF_SOC in config:
+        sens = await sensor.new_sensor(config[CONF_SOC])
+        cg.add(parent.set_soc_sensor(sens))
+    
+    if CONF_REMAINING_CAPACITY in config:
+        sens = await sensor.new_sensor(config[CONF_REMAINING_CAPACITY])
+        cg.add(parent.set_remaining_capacity_sensor(sens))
+    
+    if CONF_CYCLE_COUNT in config:
+        sens = await sensor.new_sensor(config[CONF_CYCLE_COUNT])
+        cg.add(parent.set_cycle_count_sensor(sens))
+    
+    # 处理单体电压传感器
+    if CONF_CELL_VOLTAGES in config:
+        for conf in config[CONF_CELL_VOLTAGES]:
+            sens = await sensor.new_sensor(conf)
+            cg.add(parent.add_cell_voltage_sensor(sens))
+    
+    # 处理温度传感器
+    if CONF_TEMPERATURES in config:
+        for conf in config[CONF_TEMPERATURES]:
+            sens = await sensor.new_sensor(conf)
+            cg.add(parent.add_temperature_sensor(sens))
 CONF_CELL_RESISTANCE_13 = "cell_resistance_13"
 CONF_CELL_RESISTANCE_14 = "cell_resistance_14"
 CONF_CELL_RESISTANCE_15 = "cell_resistance_15"

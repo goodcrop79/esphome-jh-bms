@@ -1,84 +1,102 @@
 import esphome.codegen as cg
-from esphome.components import binary_sensor
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, DEVICE_CLASS_CONNECTIVITY, ENTITY_CATEGORY_DIAGNOSTIC
-
-from . import CONF_JH_BMS_ESP32_ID, JH_BMS_ESP32_COMPONENT_SCHEMA
-from .const import CONF_BALANCING, CONF_CHARGING, CONF_DISCHARGING, CONF_HEATING
-
-DEPENDENCIES = ["jh_bms_esp32"]
-
-CODEOWNERS = ["@syssi", "@txubelaxu"]
-
-# 新增的二进制传感器配置项
-CONF_ONLINE_STATUS = "online_status"
-CONF_DRY_CONTACT_1 = "dry_contact_1"
-CONF_DRY_CONTACT_2 = "dry_contact_2"
-
-# 传感器图标定义
-ICON_CHARGING = "mdi:battery-charging"
-ICON_DISCHARGING = "mdi:power-plug"
-ICON_BALANCING = "mdi:battery-heart-variant"
-ICON_HEATING = "mdi:radiator"
-ICON_DRY_CONTACT_1 = "mdi:alarm-bell"
-ICON_DRY_CONTACT_2 = "mdi:alarm-bell"
-
-# 定义支持的二进制传感器列表
-BINARY_SENSORS = [
-    CONF_CHARGING,
-    CONF_DISCHARGING,
-    CONF_BALANCING,
-    CONF_ONLINE_STATUS,
-    CONF_HEATING,
-    CONF_DRY_CONTACT_1,
-    CONF_DRY_CONTACT_2,
-]
-
-# 定义配置模式
-CONFIG_SCHEMA = JH_BMS_ESP32_COMPONENT_SCHEMA.extend(
-    {
-        # 充电状态传感器
-        cv.Optional(CONF_CHARGING): binary_sensor.binary_sensor_schema(
-            icon=ICON_CHARGING
-        ),
-        # 放电状态传感器
-        cv.Optional(CONF_DISCHARGING): binary_sensor.binary_sensor_schema(
-            icon=ICON_DISCHARGING
-        ),
-        # 均衡状态传感器
-        cv.Optional(CONF_BALANCING): binary_sensor.binary_sensor_schema(
-            icon=ICON_BALANCING
-        ),
-        # 加热状态传感器
-        cv.Optional(CONF_HEATING): binary_sensor.binary_sensor_schema(
-            icon=ICON_HEATING
-        ),
-        # 干接点1状态传感器
-        cv.Optional(CONF_DRY_CONTACT_1): binary_sensor.binary_sensor_schema(
-            icon=ICON_DRY_CONTACT_1
-        ),
-        # 干接点2状态传感器
-        cv.Optional(CONF_DRY_CONTACT_2): binary_sensor.binary_sensor_schema(
-            icon=ICON_DRY_CONTACT_2
-        ),
-        # 在线状态传感器
-        cv.Optional(CONF_ONLINE_STATUS): binary_sensor.binary_sensor_schema(
-            device_class=DEVICE_CLASS_CONNECTIVITY,
-            entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-        ),
-    }
+from esphome.components import binary_sensor
+from esphome.const import (
+    DEVICE_CLASS_CHARGING,
+    DEVICE_CLASS_POWER,
+    DEVICE_CLASS_CONNECTIVITY,
+    DEVICE_CLASS_HEAT,
+    ICON_BATTERY_CHARGING,
+    ICON_POWER,
+    ICON_THERMOMETER,
+    ICON_EMPTY,
 )
 
+from . import CONF_JH_BMS_ESP32_ID
 
+CODEOWNERS = ["@kqepup"]
+DEPENDENCIES = ["jh_bms_esp32"]
+
+# 定义配置键
+CONF_CHARGING_STATUS = "charging_status"
+CONF_DISCHARGING_STATUS = "discharging_status"
+CONF_BALANCE_STATE = "balance_state"
+CONF_ONLINE_STATUS = "online_status"
+CONF_HEATING_STATUS = "heating_status"
+CONF_CHARGING_MOS_STATUS = "charging_mos_status"
+CONF_DISCHARGING_MOS_STATUS = "discharging_mos_status"
+
+# 定义二进制传感器配置
+BINARY_SENSORS = {
+    CONF_CHARGING_STATUS: binary_sensor.binary_sensor_schema(
+        device_class=DEVICE_CLASS_CHARGING,
+        icon=ICON_BATTERY_CHARGING,
+    ),
+    CONF_DISCHARGING_STATUS: binary_sensor.binary_sensor_schema(
+        device_class=DEVICE_CLASS_POWER,
+        icon=ICON_POWER,
+    ),
+    CONF_BALANCE_STATE: binary_sensor.binary_sensor_schema(
+        icon=ICON_EMPTY,
+    ),
+    CONF_ONLINE_STATUS: binary_sensor.binary_sensor_schema(
+        device_class=DEVICE_CLASS_CONNECTIVITY,
+        icon=ICON_EMPTY,
+    ),
+    CONF_HEATING_STATUS: binary_sensor.binary_sensor_schema(
+        device_class=DEVICE_CLASS_HEAT,
+        icon=ICON_THERMOMETER,
+    ),
+    CONF_CHARGING_MOS_STATUS: binary_sensor.binary_sensor_schema(
+        icon=ICON_EMPTY,
+    ),
+    CONF_DISCHARGING_MOS_STATUS: binary_sensor.binary_sensor_schema(
+        icon=ICON_EMPTY,
+    ),
+}
+
+# 配置模式
+CONFIG_SCHEMA = cv.Schema({
+    cv.GenerateID(CONF_JH_BMS_ESP32_ID): cv.use_id(cg.Component),
+    cv.Optional(CONF_CHARGING_STATUS): BINARY_SENSORS[CONF_CHARGING_STATUS],
+    cv.Optional(CONF_DISCHARGING_STATUS): BINARY_SENSORS[CONF_DISCHARGING_STATUS],
+    cv.Optional(CONF_BALANCE_STATE): BINARY_SENSORS[CONF_BALANCE_STATE],
+    cv.Optional(CONF_ONLINE_STATUS): BINARY_SENSORS[CONF_ONLINE_STATUS],
+    cv.Optional(CONF_HEATING_STATUS): BINARY_SENSORS[CONF_HEATING_STATUS],
+    cv.Optional(CONF_CHARGING_MOS_STATUS): BINARY_SENSORS[CONF_CHARGING_MOS_STATUS],
+    cv.Optional(CONF_DISCHARGING_MOS_STATUS): BINARY_SENSORS[CONF_DISCHARGING_MOS_STATUS],
+})
+
+# 代码生成
 async def to_code(config):
-    # 获取组件实例 - 处理CONF_JH_BMS_ESP32_ID为可选配置的情况
-    if CONF_JH_BMS_ESP32_ID in config:
-        hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
-        # 为每个配置的传感器创建和注册实例
-        for key in BINARY_SENSORS:
-            if key in config:
-                conf = config[key]
-                sens = cg.new_Pvariable(conf[CONF_ID])
-                await binary_sensor.register_binary_sensor(sens, conf)
-                # 将传感器添加到主组件
-                cg.add(getattr(hub, f"set_{key}_binary_sensor")(sens))
+    # 获取JH BMS ESP32组件
+    parent = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+    
+    # 处理所有二进制传感器
+    if CONF_CHARGING_STATUS in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_CHARGING_STATUS])
+        cg.add(parent.set_charging_status_binary_sensor(sens))
+    
+    if CONF_DISCHARGING_STATUS in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_DISCHARGING_STATUS])
+        cg.add(parent.set_discharging_status_binary_sensor(sens))
+    
+    if CONF_BALANCE_STATE in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_BALANCE_STATE])
+        cg.add(parent.set_balance_state_binary_sensor(sens))
+    
+    if CONF_ONLINE_STATUS in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_ONLINE_STATUS])
+        cg.add(parent.set_online_status_binary_sensor(sens))
+    
+    if CONF_HEATING_STATUS in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_HEATING_STATUS])
+        cg.add(parent.set_heating_status_binary_sensor(sens))
+    
+    if CONF_CHARGING_MOS_STATUS in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_CHARGING_MOS_STATUS])
+        cg.add(parent.set_charging_mos_status_binary_sensor(sens))
+    
+    if CONF_DISCHARGING_MOS_STATUS in config:
+        sens = await binary_sensor.new_binary_sensor(config[CONF_DISCHARGING_MOS_STATUS])
+        cg.add(parent.set_discharging_mos_status_binary_sensor(sens))

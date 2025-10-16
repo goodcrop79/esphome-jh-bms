@@ -2,77 +2,95 @@
 #include <stdint.h>
 #include <cstddef>
 #include <vector>
-#include <string>
+#include "esphome.h"
+#include "esphome/components/uart/uart.h"
+#include "esphome/components/sensor/sensor.h"
+#include "esphome/components/binary_sensor/binary_sensor.h"
+#include "esphome/components/text_sensor/text_sensor.h"
 
-// 命名空间
 namespace jh_bms_esp32 {
 
-// 协议版本枚举
-enum ProtocolVersion {
-  PROTOCOL_VERSION_JH01 = 0,  // JH BMS版本1
-  PROTOCOL_VERSION_JH02 = 1,  // JH BMS版本2
-  PROTOCOL_VERSION_JH03 = 2   // JH BMS版本3
-};
-
-// 客户端状态枚举
-enum ClientState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED,
-  ESTABLISHED
-};
-
-// JHBMS主类
-class JhBmsEsp32 {
+class JhBmsEsp32 : public esphome::Component, public esphome::uart::UARTDevice {
  public:
-  // 构造函数
-  JhBmsEsp32();
+  explicit JhBmsEsp32(esphome::uart::UARTComponent *parent);
+  ~JhBmsEsp32();
   
-  // 设置协议版本
-  void set_protocol_version(ProtocolVersion protocol_version) { this->protocol_version_ = protocol_version; }
-  // 设置轮询节流值
-  void set_throttle(uint32_t throttle) { this->throttle_ = throttle; }
-
-  // GATT客户端事件处理
-  void gattc_event_handler(int event, int gattc_if, void *param);
-  // 更新数据
-  void update();
-  // 组装数据帧
-  void assemble(const uint8_t *data, uint16_t length);
-  // 写入寄存器
-  bool write_register(uint8_t address, uint32_t value, uint8_t length);
-  // 转储配置
-  void dump_config();
+  // Component interface methods
+  void setup() override;
+  void loop() override;
+  void dump_config() override;
+  float get_setup_priority() const override;
+  
+  // 设置方法
+  void set_bms_version(uint8_t version) { this->bms_version_ = version; }
+  void set_update_interval(uint32_t interval) { this->update_interval_ = interval; }
+  
+  // 传感器设置方法
+  void set_total_voltage_sensor(esphome::sensor::Sensor *sensor) { this->total_voltage_sensor_ = sensor; }
+  void set_current_sensor(esphome::sensor::Sensor *sensor) { this->current_sensor_ = sensor; }
+  void set_power_sensor(esphome::sensor::Sensor *sensor) { this->power_sensor_ = sensor; }
+  void set_soc_sensor(esphome::sensor::Sensor *sensor) { this->soc_sensor_ = sensor; }
+  void set_remaining_capacity_sensor(esphome::sensor::Sensor *sensor) { this->remaining_capacity_sensor_ = sensor; }
+  void set_cycle_count_sensor(esphome::sensor::Sensor *sensor) { this->cycle_count_sensor_ = sensor; }
+  
+  // 二进制传感器设置方法
+  void set_charging_status_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->charging_status_binary_sensor_ = binary_sensor; }
+  void set_discharging_status_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->discharging_status_binary_sensor_ = binary_sensor; }
+  void set_balance_state_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->balance_state_binary_sensor_ = binary_sensor; }
+  void set_online_status_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->online_status_binary_sensor_ = binary_sensor; }
+  void set_heating_status_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->heating_status_binary_sensor_ = binary_sensor; }
+  void set_charging_mos_status_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->charging_mos_status_binary_sensor_ = binary_sensor; }
+  void set_discharging_mos_status_binary_sensor(esphome::binary_sensor::BinarySensor *binary_sensor) { this->discharging_mos_status_binary_sensor_ = binary_sensor; }
+  
+  // 文本传感器设置方法
+  void set_error_info_text_sensor(esphome::text_sensor::TextSensor *text_sensor) { this->error_info_text_sensor_ = text_sensor; }
+  
+  // 添加单体电压和温度传感器
+  void add_cell_voltage_sensor(esphome::sensor::Sensor *sensor) { this->cell_voltage_sensors_.push_back(sensor); }
+  void add_temperature_sensor(esphome::sensor::Sensor *sensor) { this->temperature_sensors_.push_back(sensor); }
 
  protected:
-  // 协议版本
-  ProtocolVersion protocol_version_;
-  // 节流值
-  uint32_t throttle_;
-
-  // BLE相关变量
-  uint16_t char_handle_;
-  uint16_t notify_handle_;
-
-  // 数据处理相关变量
-  std::vector<uint8_t> frame_buffer_;
-  uint32_t last_cell_info_;
-  bool status_notification_received_;
-
-  // 设备在线状态跟踪
-  uint8_t no_response_count_;
-
-  // 客户端状态
-  ClientState node_state;
-
-  // 内部方法
+  // 配置和状态变量
+  uint8_t bms_version_ = 1;
+  uint32_t update_interval_ = 1000; // 默认1秒
+  uint32_t last_update_ = 0;
+  
+  // 传感器指针
+  esphome::sensor::Sensor *total_voltage_sensor_ = nullptr;
+  esphome::sensor::Sensor *current_sensor_ = nullptr;
+  esphome::sensor::Sensor *power_sensor_ = nullptr;
+  esphome::sensor::Sensor *soc_sensor_ = nullptr;
+  esphome::sensor::Sensor *remaining_capacity_sensor_ = nullptr;
+  esphome::sensor::Sensor *cycle_count_sensor_ = nullptr;
+  
+  // 二进制传感器指针
+  esphome::binary_sensor::BinarySensor *charging_status_binary_sensor_ = nullptr;
+  esphome::binary_sensor::BinarySensor *discharging_status_binary_sensor_ = nullptr;
+  esphome::binary_sensor::BinarySensor *balance_state_binary_sensor_ = nullptr;
+  esphome::binary_sensor::BinarySensor *online_status_binary_sensor_ = nullptr;
+  esphome::binary_sensor::BinarySensor *heating_status_binary_sensor_ = nullptr;
+  esphome::binary_sensor::BinarySensor *charging_mos_status_binary_sensor_ = nullptr;
+  esphome::binary_sensor::BinarySensor *discharging_mos_status_binary_sensor_ = nullptr;
+  
+  // 文本传感器指针
+  esphome::text_sensor::TextSensor *error_info_text_sensor_ = nullptr;
+  
+  // 传感器数组
+  std::vector<esphome::sensor::Sensor *> cell_voltage_sensors_;
+  std::vector<esphome::sensor::Sensor *> temperature_sensors_;
+  
+  // 在线状态跟踪
+  bool is_online_ = false;
+  uint32_t last_response_time_ = 0;
+  uint8_t no_response_count_ = 0;
+  
+  // 处理方法
+  void process_sensor_data();
+  bool send_command(const uint8_t *command, size_t length);
+  bool parse_response(uint8_t *buffer, size_t length);
   void track_online_status_();
-  void reset_online_status_tracker_();
-  void publish_device_unavailable_();
-
-  // 辅助方法
-  std::string error_bits_to_string_(const uint16_t mask);
-  std::string charge_status_id_to_string_(const uint8_t status);
+  
+  static constexpr const char *TAG = "jh_bms_esp32";
 };
 
 } // namespace jh_bms_esp32
