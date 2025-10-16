@@ -388,7 +388,7 @@ SENSORS = [
 ]
 
 # 定义配置模式
-CONFIG_SCHEMA = JH_BMS_ESP32_COMPONENT_SCHEMA.extend(
+CONFIG_SCHEMA = CONFIG_SCHEMA.extend(
     {
         # 均衡状态传感器
         cv.Optional(CONF_BALANCING): sensor.sensor_schema(
