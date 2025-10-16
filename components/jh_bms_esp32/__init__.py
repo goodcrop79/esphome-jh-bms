@@ -1,5 +1,5 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.22
+# JH BMS ESP32 组件版本: 1.0.23
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
 # 添加了number.number_schema()函数的兼容性补丁，修复了ESPHome 2025.9.3版本的API变化
@@ -16,6 +16,7 @@ import esphome.codegen as cg
 # 修复了MAC地址配置问题，改为通过BLE客户端引用获取，解决ESPHome 2025.10.0版本的配置验证错误
 # 进一步优化了配置模式，移除了对BLE_CLIENT_SCHEMA的扩展，改为直接使用ble_client_id引用
 # 将protocol_version配置从必需改为可选，因为只有1个版本
+# 将mac_address配置从必需改为可选，完全使用ble_client_id进行设备连接
 try:
     from esphome.const import CONF_NUMBERS
 except ImportError:
@@ -222,7 +223,7 @@ JH_BMS_ESP32_COMPONENT_SCHEMA = cv.Schema({
 CONFIG_SCHEMA = cv.All(
     cv.Schema({
         cv.GenerateID(): cv.declare_id(JhBmsEsp32),
-        cv.Required(CONF_MAC_ADDRESS): cv.mac_address,
+        cv.Optional(CONF_MAC_ADDRESS): cv.mac_address,
         cv.Optional(CONF_THROTTLE, default="10s"): cv.All(
             cv.positive_time_period_milliseconds, cv.Range(min="1s", max="60s")
         ),
