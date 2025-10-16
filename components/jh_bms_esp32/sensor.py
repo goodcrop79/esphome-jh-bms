@@ -170,6 +170,20 @@ CONF_CELL_RESISTANCE_30 = "cell_resistance_30"
 CONF_CELL_RESISTANCE_31 = "cell_resistance_31"
 CONF_CELL_RESISTANCE_32 = "cell_resistance_32"
 
+# 单体电阻传感器配置（添加缺失的前12个）
+CONF_CELL_RESISTANCE_1 = "cell_resistance_1"
+CONF_CELL_RESISTANCE_2 = "cell_resistance_2"
+CONF_CELL_RESISTANCE_3 = "cell_resistance_3"
+CONF_CELL_RESISTANCE_4 = "cell_resistance_4"
+CONF_CELL_RESISTANCE_5 = "cell_resistance_5"
+CONF_CELL_RESISTANCE_6 = "cell_resistance_6"
+CONF_CELL_RESISTANCE_7 = "cell_resistance_7"
+CONF_CELL_RESISTANCE_8 = "cell_resistance_8"
+CONF_CELL_RESISTANCE_9 = "cell_resistance_9"
+CONF_CELL_RESISTANCE_10 = "cell_resistance_10"
+CONF_CELL_RESISTANCE_11 = "cell_resistance_11"
+CONF_CELL_RESISTANCE_12 = "cell_resistance_12"
+
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
 CONF_CELL_VOLTAGE_2 = "cell_voltage_2"
