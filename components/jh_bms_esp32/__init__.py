@@ -1,5 +1,5 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.19
+# JH BMS ESP32 组件版本: 1.0.20
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
 # 添加了number.number_schema()函数的兼容性补丁，修复了ESPHome 2025.9.3版本的API变化
@@ -12,6 +12,8 @@ import esphome.codegen as cg
 # 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"
 
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
+# 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"
+# 修复了MAC地址配置问题，改为通过BLE客户端引用获取，解决ESPHome 2025.10.0版本的配置验证错误
 try:
     from esphome.const import CONF_NUMBERS
 except ImportError:
@@ -87,6 +89,8 @@ CONFIG_MODES = {
 
 # 定义组件ID配置键
 CONF_JH_BMS_ESP32_ID = "jh_bms_esp32_id"
+# 定义BLE客户端ID配置键
+CONF_BLE_CLIENT_ID = "ble_client_id"
 
 # 定义传感器类型配置
 CONF_CELL_VOLTAGE = "cell_voltage"
@@ -323,8 +327,10 @@ async def to_code(config):
     await cg.register_component(var, config)
     await ble_client.register_ble_node(var, config)
     
-    # 设置MAC地址
-    cg.add(var.set_address(config[CONF_MAC_ADDRESS].as_string()))
+    # 通过BLE客户端引用获取MAC地址
+    if CONF_BLE_CLIENT_ID in config:
+        ble_client = await cg.get_variable(config[CONF_BLE_CLIENT_ID])
+        cg.add(var.set_ble_client(ble_client))
     
     # 设置节流值
     cg.add(var.set_throttle(config[CONF_THROTTLE]))
