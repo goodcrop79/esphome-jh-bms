@@ -2,7 +2,6 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import binary_sensor
 from esphome.const import (
-    DEVICE_CLASS_CHARGING,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_CONNECTIVITY,
     DEVICE_CLASS_HEAT,
@@ -11,6 +10,9 @@ from esphome.const import (
     ICON_THERMOMETER,
     ICON_EMPTY,
 )
+
+# 自定义设备类常量
+DEVICE_CLASS_CHARGING = ""
 
 from . import CONF_JH_BMS_ESP32_ID
 
