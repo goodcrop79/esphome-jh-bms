@@ -49,5 +49,8 @@ async def to_code(config):
 # 导入子组件
 from . import sensor, binary_sensor, text_sensor
 
+# 为了兼容性，添加组件配置模式的别名
+JH_BMS_ESP32_COMPONENT_SCHEMA = CONFIG_SCHEMA
+
 # 导出必要的配置
-__all__ = ["CONF_JH_BMS_ESP32_ID", "JhBmsEsp32", "CONFIG_SCHEMA"]
+__all__ = ["CONF_JH_BMS_ESP32_ID", "JhBmsEsp32", "CONFIG_SCHEMA", "JH_BMS_ESP32_COMPONENT_SCHEMA"]
