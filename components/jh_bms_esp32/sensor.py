@@ -12,7 +12,6 @@ from esphome.const import (
     UNIT_VOLT,
     UNIT_AMPERE,
     UNIT_WATT,
-    UNIT_CYCLE,
     DEVICE_CLASS_BATTERY,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_POWER,
@@ -27,6 +26,7 @@ from esphome.const import (
 
 # 定义组件需要但ESPHome中不存在的单位常量
 UNIT_AMPERE_HOURS = "Ah"
+UNIT_CYCLE = "cycles"
 
 from . import JhBmsEsp32, CONF_JH_BMS_ESP32_ID
 
