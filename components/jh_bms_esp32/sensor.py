@@ -208,6 +208,9 @@ UNIT_EMPTY = ""
 # 设备类定义
 DEVICE_CLASS_EMPTY = ""
 
+# 状态类定义
+STATE_CLASS_MEASUREMENT = "measurement"
+
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
 CONF_CELL_VOLTAGE_2 = "cell_voltage_2"
