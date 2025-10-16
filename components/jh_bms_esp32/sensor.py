@@ -186,6 +186,21 @@ CONF_CELL_RESISTANCE_12 = "cell_resistance_12"
 
 # 其他传感器配置
 CONF_BALANCING = "balancing"
+CONF_MIN_CELL_VOLTAGE = "min_cell_voltage"
+CONF_MAX_CELL_VOLTAGE = "max_cell_voltage"
+CONF_MIN_VOLTAGE_CELL = "min_voltage_cell"
+CONF_MAX_VOLTAGE_CELL = "max_voltage_cell"
+CONF_DELTA_CELL_VOLTAGE = "delta_cell_voltage"
+CONF_AVERAGE_CELL_VOLTAGE = "average_cell_voltage"
+CONF_TOTAL_VOLTAGE = "total_voltage"
+CONF_CURRENT = "current"
+CONF_POWER = "power"
+CONF_CHARGING_POWER = "charging_power"
+CONF_DISCHARGING_POWER = "discharging_power"
+CONF_POWER_TUBE_TEMPERATURE = "power_tube_temperature"
+CONF_STATE_OF_CHARGE = "state_of_charge"
+CONF_CAPACITY_REMAINING = "capacity_remaining"
+CONF_TOTAL_BATTERY_CAPACITY_SETTING = "total_battery_capacity_setting"
 
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
