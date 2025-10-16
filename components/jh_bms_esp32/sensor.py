@@ -20,13 +20,13 @@ from esphome.const import (
     ICON_CURRENT_AC,
     ICON_FLASH,
     ICON_THERMOMETER,
-    ICON_VOLTAGE,
     ICON_BATTERY,
 )
 
-# 定义组件需要但ESPHome中不存在的单位常量
+# 定义组件需要但ESPHome中不存在的单位常量和图标常量
 UNIT_AMPERE_HOURS = "Ah"
 UNIT_CYCLE = "cycles"
+ICON_VOLTAGE = "mdi:flash"
 
 from . import JhBmsEsp32, CONF_JH_BMS_ESP32_ID
 
