@@ -1,6 +1,6 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.25
-COMPONENT_VERSION = "1.0.25"  # 修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题
+# JH BMS ESP32 组件版本: 1.0.26
+COMPONENT_VERSION = "1.0.26"  # 修复ESPHome 2025.10.0版本中binary_sensor.jh_bms_esp32组件需要显式指定'jh_bms_esp32_id'选项的问题
 # 修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
@@ -218,7 +218,7 @@ def validate_config_mode(value):
 
 # 定义基本组件架构
 JH_BMS_ESP32_COMPONENT_SCHEMA = cv.Schema({
-    cv.Required(CONF_JH_BMS_ESP32_ID): cv.use_id(JhBmsEsp32),
+    cv.Optional(CONF_JH_BMS_ESP32_ID): cv.use_id(JhBmsEsp32),
 })
 
 # 定义完整的组件配置架构

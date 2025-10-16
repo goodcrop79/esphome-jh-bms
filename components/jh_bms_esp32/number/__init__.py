@@ -470,34 +470,35 @@ for key, config in NUMBERS.items():
 
 
 async def to_code(config):
-    # 获取组件实例
-    hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
-    # 获取协议版本
-    protocol_version = config.get("protocol_version", "JH01")
-    # 遍历所有数值控制类型
-    for key, number_config in NUMBERS.items():
-        # 检查配置中是否有该数值控制
-        if key in config:
-            # 获取数值控制配置
-            conf = config[key]
-            # 创建数值控制组件
-            var = cg.new_Pvariable(conf["id"])
-            # 注册数值控制组件
-            await number.register_number(
-                var,
-                conf,
-                min_value=number_config["min_value"],
-                max_value=number_config["max_value"],
-                step=number_config["step"],
-            )
-            # 将数值控制添加到组件
-            await cg.register_component(var, conf)
-            # 设置数值控制的父组件
-            cg.add(var.set_parent(hub))
-            # 根据协议版本设置寄存器地址、因子和长度
-            # 为了支持不同品牌的BMS，这里需要根据实际协议修改
-            register_info = number_config.get(protocol_version, number_config["JH01"])
-            register_address, factor, length = register_info
+    # 获取组件实例 - 处理CONF_JH_BMS_ESP32_ID为可选配置的情况
+    if CONF_JH_BMS_ESP32_ID in config:
+        hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+        # 获取协议版本
+        protocol_version = config.get("protocol_version", "JH01")
+        # 遍历所有数值控制类型
+        for key, number_config in NUMBERS.items():
+            # 检查配置中是否有该数值控制
+            if key in config:
+                # 获取数值控制配置
+                conf = config[key]
+                # 创建数值控制组件
+                var = cg.new_Pvariable(conf["id"])
+                # 注册数值控制组件
+                await number.register_number(
+                    var,
+                    conf,
+                    min_value=number_config["min_value"],
+                    max_value=number_config["max_value"],
+                    step=number_config["step"],
+                )
+                # 将数值控制添加到组件
+                await cg.register_component(var, conf)
+                # 设置数值控制的父组件
+                cg.add(var.set_parent(hub))
+                # 根据协议版本设置寄存器地址、因子和长度
+                # 为了支持不同品牌的BMS，这里需要根据实际协议修改
+                register_info = number_config.get(protocol_version, number_config["JH01"])
+                register_address, factor, length = register_info
             cg.add(var.set_register(register_address))
             cg.add(var.set_factor(factor))
             cg.add(var.set_length(length))

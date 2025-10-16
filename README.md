@@ -1,18 +1,20 @@
-# JH BMS ESPHome 组件 (v1.0.25)
+# JH BMS ESPHome 组件 (v1.0.26)
 
 这是一个用于ESPHome的JH BMS（电池管理系统）组件，允许您通过ESP32与JH BMS进行通信。
 
-## 重要更新 (版本 1.0.25)
+## 重要更新
 
-**修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题**
+### 1.0.26
+- 修复ESPHome 2025.10.0版本中binary_sensor.jh_bms_esp32组件需要显式指定'jh_bms_esp32_id'选项的问题
 
-**版本 1.0.24 修复throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误**
+### 1.0.25
+- 修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题
 
-**版本 1.0.23 将mac_address配置从必需改为可选，完全使用ble_client_id进行设备连接**
+### 1.0.24
+- 修复throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误
 
-版本1.0.25修复了ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题。
-
-版本1.0.24修复了throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误。
+### 1.0.23
+- 将mac_address配置从必需改为可选，完全使用ble_client_id进行设备连接
 
 版本1.0.23将mac_address配置从必需改为可选，完全使用ble_client_id进行设备连接，彻底解决了ESPHome 2025.10.0版本的配置验证错误。
 
@@ -41,7 +43,7 @@
 
 确保在ESPHome 2025.9.3及更高版本中能够正常工作。如果您之前遇到导入错误，请按照以下说明操作以获取最新修复版本。
 
-注意：版本1.0.25修复了ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题；版本1.0.24修复了throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误；版本1.0.21进一步优化了配置模式，完全解决了配置验证错误；版本1.0.20修复了MAC地址配置问题，版本1.0.19修复了polling_component_schema参数类型错误问题。
+注意：版本1.0.26修复了ESPHome 2025.10.0版本中binary_sensor.jh_bms_esp32组件需要显式指定'jh_bms_esp32_id'选项的问题；版本1.0.25修复了ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题；版本1.0.24修复了throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误；版本1.0.21进一步优化了配置模式，完全解决了配置验证错误；版本1.0.20修复了MAC地址配置问题，版本1.0.19修复了polling_component_schema参数类型错误问题。
 
 ## 功能特性
 - 读取电池组状态信息
@@ -59,7 +61,7 @@ external_components:
   - source: github://goodcrop79/esphome-jh-bms@main
     components: [jh_bms_esp32]
     refresh: 0s  # 设置为0s以确保获取最新修复版本
-    version: "1.0.25" # 指定使用版本1.0.25，修复了ble_client组件参数兼容性错误
+    version: "1.0.26" # 指定使用版本1.0.26，修复了binary_sensor.jh_bms_esp32组件配置验证问题
 
 **重要说明：**
 - 设置`refresh: 0s`将强制ESPHome每次编译时从GitHub获取最新代码
@@ -90,7 +92,7 @@ sensor:
 ```
 
 ## 依赖项
-- ESPHome ^2023.12.0 或更高版本（已在ESPHome 2025.10.0版本中测试通过，版本1.0.25完全兼容，修复了ble_client组件参数兼容性错误）
+- ESPHome ^2023.12.0 或更高版本（已在ESPHome 2025.10.0版本中测试通过，版本1.0.26完全兼容，修复了binary_sensor.jh_bms_esp32组件配置验证问题）
 - 版本1.0.22已将protocol_version配置从必需改为可选，因为只有1个版本
 - ESP32设备
 - JH BMS电池管理系统

@@ -257,28 +257,29 @@ CONFIG_SCHEMA = JH_BMS_ESP32_COMPONENT_SCHEMA.extend(
 
 
 async def to_code(config):
-    # 获取组件实例
-    hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
-    # 获取协议版本
-    protocol_version = config.get("protocol_version", "JH01")
-    # 遍历所有开关类型
-    for key in SWITCHES:
-        # 检查配置中是否有该开关
-        if key in config:
-            # 获取开关配置
-            conf = config[key]
-            # 创建开关组件
-            var = cg.new_Pvariable(conf["id"])
-            # 注册开关组件
-            await switch.register_switch(var, conf)
-            # 将开关添加到组件
-            await cg.register_component(var, conf)
-            # 设置开关的父组件
-            cg.add(var.set_parent(hub))
-            # 根据协议版本设置寄存器地址
-            # 为了支持不同品牌的BMS，这里需要根据实际协议修改
-            register_address = SWITCHES[key].get(protocol_version, SWITCHES[key]["JH01"])
-            cg.add(var.set_register(register_address))
-            # 调用hub的set_*_switch方法设置开关
-            # 为了支持不同品牌的BMS，这里的方法名可能需要根据实际情况修改
-            cg.add(getattr(hub, f"set_{key}_switch")(var))
+    # 获取组件实例 - 处理CONF_JH_BMS_ESP32_ID为可选配置的情况
+    if CONF_JH_BMS_ESP32_ID in config:
+        hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+        # 获取协议版本
+        protocol_version = config.get("protocol_version", "JH01")
+        # 遍历所有开关类型
+        for key in SWITCHES:
+            # 检查配置中是否有该开关
+            if key in config:
+                # 获取开关配置
+                conf = config[key]
+                # 创建开关组件
+                var = cg.new_Pvariable(conf["id"])
+                # 注册开关组件
+                await switch.register_switch(var, conf)
+                # 将开关添加到组件
+                await cg.register_component(var, conf)
+                # 设置开关的父组件
+                cg.add(var.set_parent(hub))
+                # 根据协议版本设置寄存器地址
+                # 为了支持不同品牌的BMS，这里需要根据实际协议修改
+                register_address = SWITCHES[key].get(protocol_version, SWITCHES[key]["JH01"])
+                cg.add(var.set_register(register_address))
+                # 调用hub的set_*_switch方法设置开关
+                # 为了支持不同品牌的BMS，这里的方法名可能需要根据实际情况修改
+                cg.add(getattr(hub, f"set_{key}_switch")(var))

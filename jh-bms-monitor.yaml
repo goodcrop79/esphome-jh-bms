@@ -10,7 +10,7 @@
 # 修复了text_sensor.text_sensor属性名错误，更新为text_sensor.TextSensor，解决了ESPHome 2025.9.3版本中的属性名错误
 # 修复了button.jh_button_schema属性名错误，更新为button.CONFIG_SCHEMA，解决了ESPHome 2025.9.3版本中的AttributeError错误
 # 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"，解决了ESPHome 2025.9.3版本中的AssertionError错误
-# 1.0.25 - 修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题
+# 1.0.26 - 修复ESPHome 2025.10.0版本中binary_sensor.jh_bms_esp32组件需要显式指定'jh_bms_esp32_id'选项的问题
 
 substitutions:
   name: jh-bms-monitor

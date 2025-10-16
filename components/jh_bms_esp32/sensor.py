@@ -538,29 +538,30 @@ CONFIG_SCHEMA = CONFIG_SCHEMA.extend({
 
 
 async def to_code(config):
-    # 获取组件实例
-    hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
-    # 注册单体电压传感器
-    for i, key in enumerate(CELL_VOLTAGES):
-        if key in config:
-            conf = config[key]
-            sens = await sensor.new_sensor(conf)
-            cg.add(hub.set_cell_voltage_sensor(i, sens))
-    # 注册单体电阻传感器
-    for i, key in enumerate(CELL_RESISTANCES):
-        if key in config:
-            conf = config[key]
-            sens = await sensor.new_sensor(conf)
-            cg.add(hub.set_cell_resistance_sensor(i, sens))
-    # 注册温度传感器
-    for i, key in enumerate(TEMPERATURES):
-        if key in config:
-            conf = config[key]
-            sens = await sensor.new_sensor(conf)
-            cg.add(hub.set_temperature_sensor(i, sens))
-    # 注册其他传感器
-    for key in SENSORS:
-        if key in config:
-            conf = config[key]
-            sens = await sensor.new_sensor(conf)
-            cg.add(getattr(hub, f"set_{key}_sensor")(sens))
+    # 获取组件实例 - 处理CONF_JH_BMS_ESP32_ID为可选配置的情况
+    if CONF_JH_BMS_ESP32_ID in config:
+        hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+        # 注册单体电压传感器
+        for i, key in enumerate(CELL_VOLTAGES):
+            if key in config:
+                conf = config[key]
+                sens = await sensor.new_sensor(conf)
+                cg.add(hub.set_cell_voltage_sensor(i, sens))
+        # 注册单体电阻传感器
+        for i, key in enumerate(CELL_RESISTANCES):
+            if key in config:
+                conf = config[key]
+                sens = await sensor.new_sensor(conf)
+                cg.add(hub.set_cell_resistance_sensor(i, sens))
+        # 注册温度传感器
+        for i, key in enumerate(TEMPERATURES):
+            if key in config:
+                conf = config[key]
+                sens = await sensor.new_sensor(conf)
+                cg.add(hub.set_temperature_sensor(i, sens))
+        # 注册其他传感器
+        for key in SENSORS:
+            if key in config:
+                conf = config[key]
+                sens = await sensor.new_sensor(conf)
+                cg.add(getattr(hub, f"set_{key}_sensor")(sens))

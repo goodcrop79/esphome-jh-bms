@@ -58,13 +58,14 @@ CONFIG_SCHEMA = JH_BMS_ESP32_COMPONENT_SCHEMA.extend(
 
 
 async def to_code(config):
-    # 获取组件实例
-    hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
-    # 为每个配置的文本传感器创建和注册实例
-    for key in TEXT_SENSORS:
-        if key in config:
-            conf = config[key]
-            sens = cg.new_Pvariable(conf[CONF_ID])
-            await text_sensor.register_text_sensor(sens, conf)
-            # 将传感器添加到主组件
-            cg.add(getattr(hub, f"set_{key}_text_sensor")(sens))
+    # 获取组件实例 - 处理CONF_JH_BMS_ESP32_ID为可选配置的情况
+    if CONF_JH_BMS_ESP32_ID in config:
+        hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+        # 为每个配置的文本传感器创建和注册实例
+        for key in TEXT_SENSORS:
+            if key in config:
+                conf = config[key]
+                sens = cg.new_Pvariable(conf[CONF_ID])
+                await text_sensor.register_text_sensor(sens, conf)
+                # 将传感器添加到主组件
+                cg.add(getattr(hub, f"set_{key}_text_sensor")(sens))

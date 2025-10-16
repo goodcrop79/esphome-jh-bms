@@ -162,23 +162,24 @@ CONFIG_SCHEMA = JH_BMS_ESP32_COMPONENT_SCHEMA.extend(
 
 
 async def to_code(config):
-    # 获取组件实例
-    hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
-    # 遍历所有按钮类型
-    for key in BUTTONS:
-        # 检查配置中是否有该按钮
-        if key in config:
-            # 获取按钮配置
-            conf = config[key]
-            # 创建按钮组件
-            var = cg.new_Pvariable(conf["id"])
-            # 注册按钮组件
-            await button.register_button(var, conf)
-            # 将按钮添加到组件
-            await cg.register_component(var, conf)
-            # 设置按钮的父组件
-            cg.add(var.set_parent(hub))
-            # 设置按钮命令码
-            # 为了支持不同品牌的BMS，这里需要根据实际协议修改命令码
-            command = BUTTONS[key]
-            cg.add(var.set_command(command))
+    # 获取组件实例 - 处理CONF_JH_BMS_ESP32_ID为可选配置的情况
+    if CONF_JH_BMS_ESP32_ID in config:
+        hub = await cg.get_variable(config[CONF_JH_BMS_ESP32_ID])
+        # 遍历所有按钮类型
+        for key in BUTTONS:
+            # 检查配置中是否有该按钮
+            if key in config:
+                # 获取按钮配置
+                conf = config[key]
+                # 创建按钮组件
+                var = cg.new_Pvariable(conf["id"])
+                # 注册按钮组件
+                await button.register_button(var, conf)
+                # 将按钮添加到组件
+                await cg.register_component(var, conf)
+                # 设置按钮的父组件
+                cg.add(var.set_parent(hub))
+                # 设置按钮命令码
+                # 为了支持不同品牌的BMS，这里需要根据实际协议修改命令码
+                command = BUTTONS[key]
+                cg.add(var.set_command(command))
