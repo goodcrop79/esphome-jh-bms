@@ -184,6 +184,9 @@ CONF_CELL_RESISTANCE_10 = "cell_resistance_10"
 CONF_CELL_RESISTANCE_11 = "cell_resistance_11"
 CONF_CELL_RESISTANCE_12 = "cell_resistance_12"
 
+# 其他传感器配置
+CONF_BALANCING = "balancing"
+
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
 CONF_CELL_VOLTAGE_2 = "cell_voltage_2"
