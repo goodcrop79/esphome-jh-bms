@@ -1,6 +1,7 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.24
-# 修复throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误
+# JH BMS ESP32 组件版本: 1.0.25
+COMPONENT_VERSION = "1.0.25"  # 修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题
+# 修复ESPHome 2025.10.0版本中ble_client组件不再支持auto_reconnect和connect_timeout参数的问题
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
 # 添加了number.number_schema()函数的兼容性补丁，修复了ESPHome 2025.9.3版本的API变化
