@@ -2,9 +2,11 @@
 
 这是一个用于ESPHome的JH BMS（电池管理系统）组件，允许您通过ESP32与JH BMS进行通信。
 
-## 重要更新 (版本 1.0.21)
+## 重要更新 (版本 1.0.22)
 
-**进一步优化了配置模式，完全解决了ESPHome 2025.10.0版本的配置验证错误**
+**将protocol_version配置从必需改为可选，因为只有1个版本**
+
+版本1.0.22将protocol_version配置从必需改为可选，因为只有1个版本。
 
 版本1.0.21进一步优化了配置模式，移除了对BLE_CLIENT_SCHEMA的扩展，改为直接使用ble_client_id引用，完全解决ESPHome 2025.10.0版本的配置验证错误。
 
@@ -45,12 +47,11 @@ external_components:
   - source: github://goodcrop79/esphome-jh-bms@main
     components: [jh_bms_esp32]
     refresh: 0s  # 设置为0s以确保获取最新修复版本
-    version: "1.0.21" # 指定使用版本1.0.21
-```
+    version: "1.0.22" # 指定使用版本1.0.22
 
 **重要说明：**
 - 设置`refresh: 0s`将强制ESPHome每次编译时从GitHub获取最新代码
-- 这确保您使用的是包含所有修复的版本1.0.20
+- 这确保您使用的是包含所有修复的版本1.0.22
 - 一旦确认组件正常工作后，您可以将其改回`refresh: 1d`以减少不必要的更新检查
 - 如果您仍然遇到导入错误，请尝试以下步骤：
   1. 完全删除ESPHome的缓存文件
@@ -77,7 +78,7 @@ sensor:
 ```
 
 ## 依赖项
-- ESPHome ^2023.12.0 或更高版本（已在ESPHome 2025.10.0版本中测试通过，版本1.0.21完全兼容）
+- ESPHome ^2023.12.0 或更高版本（已在ESPHome 2025.10.0版本中测试通过，版本1.0.22完全兼容，protocol_version配置已从必需改为可选）
 - ESP32设备
 - JH BMS电池管理系统
 
