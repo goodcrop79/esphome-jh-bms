@@ -205,6 +205,9 @@ CONF_TOTAL_BATTERY_CAPACITY_SETTING = "total_battery_capacity_setting"
 # 单位定义
 UNIT_EMPTY = ""
 
+# 设备类定义
+DEVICE_CLASS_EMPTY = ""
+
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
 CONF_CELL_VOLTAGE_2 = "cell_voltage_2"
