@@ -10,7 +10,7 @@
 # 修复了text_sensor.text_sensor属性名错误，更新为text_sensor.TextSensor，解决了ESPHome 2025.9.3版本中的属性名错误
 # 修复了button.jh_button_schema属性名错误，更新为button.CONFIG_SCHEMA，解决了ESPHome 2025.9.3版本中的AttributeError错误
 # 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"，解决了ESPHome 2025.9.3版本中的AssertionError错误
-# 版本: 1.0.23 - 将mac_address配置从必需改为可选，完全使用ble_client_id进行设备连接，彻底解决ESPHome 2025.10.0版本的配置验证错误
+# 1.0.24 - 修复throttle参数的cv.Range配置在ESPHome 2025.10.0版本中的类型兼容性错误
 
 substitutions:
   name: jh-bms-monitor
