@@ -1,5 +1,5 @@
 import esphome.codegen as cg
-# JH BMS ESP32 组件版本: 1.0.20
+# JH BMS ESP32 组件版本: 1.0.21
 # 修复了ESPHome 2025.9.3版本中的导入错误、循环导入问题和命名空间变量不匹配问题
 # 完全更新了所有使用旧命名空间变量的代码
 # 添加了number.number_schema()函数的兼容性补丁，修复了ESPHome 2025.9.3版本的API变化
@@ -14,6 +14,7 @@ import esphome.codegen as cg
 # 为ESPHome 2025.9.3及更高版本定义缺失的常量
 # 修复了polling_component_schema参数类型错误，将数字1000更新为字符串"1s"
 # 修复了MAC地址配置问题，改为通过BLE客户端引用获取，解决ESPHome 2025.10.0版本的配置验证错误
+# 进一步优化了配置模式，移除了对BLE_CLIENT_SCHEMA的扩展，改为直接使用ble_client_id引用
 try:
     from esphome.const import CONF_NUMBERS
 except ImportError:
@@ -225,6 +226,7 @@ CONFIG_SCHEMA = cv.All(
             cv.positive_time_period_milliseconds, cv.Range(min="1s", max="60s")
         ),
         cv.Optional(CONF_PROTOCOL_VERSION, default="JH02"): cv.enum(PROTOCOL_VERSIONS, upper=True),
+        cv.Required(CONF_BLE_CLIENT_ID): cv.use_id(ble_client.BLEClient),
         
         # 传感器配置
         cv.Optional(CONF_SENSORS): cv.Schema({
@@ -316,7 +318,6 @@ CONFIG_SCHEMA = cv.All(
         
         # 【需要修改】根据JH BMS的实际配置需求添加更多配置项
     })
-    .extend(ble_client.BLE_CLIENT_SCHEMA)
     .extend(cv.polling_component_schema("1s")),
     validate_config,
 )
@@ -325,7 +326,6 @@ CONFIG_SCHEMA = cv.All(
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    await ble_client.register_ble_node(var, config)
     
     # 通过BLE客户端引用获取MAC地址
     if CONF_BLE_CLIENT_ID in config:
