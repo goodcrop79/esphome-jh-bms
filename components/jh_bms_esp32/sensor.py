@@ -2,7 +2,6 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
 from esphome.const import (
-    CONF_BATTERY,
     CONF_CURRENT,
     CONF_POWER,
     CONF_TEMPERATURE,
