@@ -213,6 +213,21 @@ STATE_CLASS_MEASUREMENT = "measurement"
 
 # 图标定义
 ICON_EMPTY = ""
+ICON_BALANCER = "mdi:battery-charging"  # 均衡器图标
+ICON_MIN_VOLTAGE_CELL = "mdi:battery-alert"  # 最小电压单体图标
+ICON_MAX_VOLTAGE_CELL = "mdi:battery-positive"  # 最大电压单体图标
+ICON_CELL_RESISTANCE = "mdi:resistor"  # 单体电阻图标
+ICON_CURRENT_DC = "mdi:current-dc"  # 直流电流图标
+ICON_CAPACITY_REMAINING = "mdi:battery-outline"  # 剩余容量图标
+ICON_CHARGING_CYCLES = "mdi:refresh"  # 充电循环次数图标
+ICON_COUNTER = "mdi:counter"  # 计数器图标
+ICON_TIMELAPSE = "mdi:clock-outline"  # 时间图标
+ICON_ERRORS_BITMASK = "mdi:alert-circle"  # 错误图标
+ICON_CHARGE_STATUS_ID = "mdi:battery-status"  # 充电状态ID图标
+ICON_CHARGE_STATUS_TIME_ELAPSED = "mdi:timer-outline"  # 充电状态经过时间图标
+
+# 状态类定义补充
+STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 
 # 单体电压传感器配置
 CONF_CELL_VOLTAGE_1 = "cell_voltage_1"
